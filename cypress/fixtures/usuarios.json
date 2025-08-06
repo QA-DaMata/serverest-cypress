@@ -1,0 +1,22 @@
+[
+  {
+    "email": "beltranoqa.com.br",
+    "password": "teste",
+    "administrador": "true"
+  },
+  {
+    "nome": "teste",
+    "password": "teste",
+    "administrador": "true"
+  },
+  {
+    "nome": "teste",
+    "email": "beltranoqa.com.br",
+    "administrador": "true"
+  },
+  {
+    "nome": "teste",
+    "email": "beltranoqa.com.br",
+    "password": "teste"
+  }
+]
