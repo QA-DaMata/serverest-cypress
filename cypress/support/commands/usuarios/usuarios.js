@@ -1,3 +1,17 @@
+Cypress.Commands.add('token', (email, senha) => {
+    cy.request({
+        "method": "POST",
+        "url": "login",
+        "body": {
+            "email": email,
+            "password": senha
+        },
+        "failOnStatusCode": false
+    }).then(res => {
+        return res.body.authorization
+    })
+})
+
 Cypress.Commands.add('buscarUsuarios', () => {
     cy.request({
         "method": "GET",
