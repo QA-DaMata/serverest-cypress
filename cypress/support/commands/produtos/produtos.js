@@ -33,3 +33,12 @@ Cypress.Commands.add('atualizarProduto', (id, token, data) => {
         "failOnStatusCode": false
     })
 })
+
+Cypress.Commands.add('deletarProduto', (id, token) => {
+        cy.request({
+        "method": "DELETE",
+        "url": `produtos/${id}`,
+        "headers": { authorization: token },
+        "failOnStatusCode": false
+    })
+})
