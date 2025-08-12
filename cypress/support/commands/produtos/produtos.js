@@ -17,9 +17,19 @@ Cypress.Commands.add('cadastrarProduto', (token, data) => {
 })
 
 Cypress.Commands.add('listarProdutosId', (id) => {
-        cy.request({
+    cy.request({
         "method": "GET",
         "url": `produtos/${id}`,
+        "failOnStatusCode": false
+    })
+})
+
+Cypress.Commands.add('atualizarProduto', (id, token, data) => {
+    cy.request({
+        "method": "PUT",
+        "url": `produtos/${id}`,
+        "headers": { authorization: token },
+        "body": data,
         "failOnStatusCode": false
     })
 })
