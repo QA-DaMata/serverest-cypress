@@ -5,7 +5,7 @@ export default {
         const nome = faker.commerce.productName()
         const preco = Math.floor(Math.random() * 100)
         const descricao = faker.commerce.productDescription()
-        const quantidade = faker.number.int(100)
+        const quantidade = faker.number.int(100) + 1
 
         return {
             nome: nome,
