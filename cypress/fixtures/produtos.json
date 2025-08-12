@@ -1,0 +1,22 @@
+[
+    {
+        "preco": 50,
+        "descricao": "um otimo produto",
+        "quantidade": 10
+    },
+    {
+        "nome": "mouse",
+        "descricao": "um mouse gamer",
+        "quantidade": 20
+    },
+    {
+        "nome": "teclado",
+        "preco": 60,
+        "quantidade": 2
+    },
+    {
+        "nome": "fone",
+        "preco": 94,
+        "descricao": "fone gamer para jogos "
+    }
+]

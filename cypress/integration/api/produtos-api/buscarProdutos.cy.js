@@ -6,7 +6,6 @@ describe('Teste de api na rota GET de produtos', () => {
     beforeEach(() => {
         cy.token("fulano@qa.com", "teste").then(res => {
             token = res
-            cy.log(JSON.stringify(res))
         })
     });
 
