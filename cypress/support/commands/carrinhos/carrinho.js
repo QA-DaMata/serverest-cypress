@@ -27,3 +27,18 @@ Cypress.Commands.add('listarCarrinhoId', (id) => {
         "failOnStatusCode": false
     })
 })
+
+Cypress.Commands.add('cadastrarCarrinhoDuplicado', (token, data, data2) => {
+    cy.request({
+        "method": "POST",
+        "url": "carrinhos",
+        "headers": { authorization: token },
+        "body": {
+            "produtos": [
+                data,
+                data2
+            ]
+        },
+        "failOnStatusCode": false
+    })
+})
