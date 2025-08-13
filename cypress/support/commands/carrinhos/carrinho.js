@@ -42,3 +42,12 @@ Cypress.Commands.add('cadastrarCarrinhoDuplicado', (token, data, data2) => {
         "failOnStatusCode": false
     })
 })
+
+Cypress.Commands.add('concluirCompra', (token)=>{
+        cy.request({
+        "method": "DELETE",
+        "url": "carrinhos/concluir-compra",
+        "headers": { authorization: token },
+        "failOnStatusCode": false
+    })
+})
