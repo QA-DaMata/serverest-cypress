@@ -17,7 +17,7 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
         })
     });
 
-    it('Deve concluir o carrinho com sucesso', () => {
+    it('Deve cancelar a compra com sucesso', () => {
         let produto = produtos.produtoData()
         let carrinho = carrinhos.carrinhoData()
 
@@ -29,28 +29,28 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
             cy.cadastrarCarrinho(token, carrinho).then(res => {
                 expect(res.status).eq(201)
                 expect(res.body.message).eq('Cadastro realizado com sucesso')
-                cy.concluirCompra(token).then(res => {
+                cy.cancelarCompra(token).then(res => {
                     expect(res.status).eq(200)
-                    expect(res.body.message).eq('Registro excluído com sucesso')
+                    expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
                 })
             })
         })
     })
 
-    it('Não deve concluir carrinho não encontrado', () => {
+    it('Não deve cancelar a compra com o carrinho não encontrado', () => {
         let produto = produtos.produtoData()
 
         cy.cadastrarProduto(token, produto).then(res => {
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
-            cy.concluirCompra(token).then(res => {
+            cy.cancelarCompra(token).then(res => {
                 expect(res.status).eq(200)
                 expect(res.body.message).eq('Não foi encontrado carrinho para esse usuário')
             })
         })
     })
 
-    it('Não deve concluir o carrinho com o token invalido', () => {
+    it('Não deve cancelar o carrinho com o token invalido', () => {
         let produto = produtos.produtoData()
         let carrinho = carrinhos.carrinhoData()
 
@@ -63,7 +63,7 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
                 let tokenInvalido = 'souInvalidoASEHJKGF'
                 expect(res.status).eq(201)
                 expect(res.body.message).eq('Cadastro realizado com sucesso')
-                cy.concluirCompra(tokenInvalido).then(res => {
+                cy.cancelarCompra(tokenInvalido).then(res => {
                     expect(res.status).eq(401)
                     expect(res.body.message).eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
                 })
