@@ -1,5 +1,13 @@
 import usuarios from "../../../fixtures/factories/usuario";
+import contrato from "../../../contracts/usuarios.contrato"
+
 describe('Teste de api na rota GET de usuarios', () => {
+
+    it('Deve validar contrato de usuarios com sucesso', () => {
+        cy.request('usuarios').then(res => {
+            return contrato.validateAsync(res.body)
+        })
+    })
 
     it('Deve listar todos os usuarios cadastrados', () => {
         cy.buscarUsuarios().then(res => {

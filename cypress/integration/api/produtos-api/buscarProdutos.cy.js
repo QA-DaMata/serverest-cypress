@@ -1,4 +1,5 @@
 import produtos from "../../../fixtures/factories/produto";
+import contrato from "../../../contracts/produtos.contrato"
 
 describe('Teste de api na rota GET de produtos', () => {
     let token;
@@ -8,6 +9,12 @@ describe('Teste de api na rota GET de produtos', () => {
             token = res
         })
     });
+
+    it('Deve validar o contrato de produtos com sucesso', () => {
+        cy.request('produtos').then(res => {
+            return contrato.validateAsync(res.body)
+        })
+    })
 
     it('Deve listar todos os produto cadastrados', () =>{
         cy.listarProdutos().then(res => {

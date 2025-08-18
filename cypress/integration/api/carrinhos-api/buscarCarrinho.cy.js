@@ -1,6 +1,7 @@
 import carrinhos from "../../../fixtures/factories/carrinho";
 import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario";
+import contrato from "../../../contracts/carrinhos.contrato"
 
 describe('Teste de api na rota GET de carrinhos', () => {
     let token;
@@ -16,6 +17,12 @@ describe('Teste de api na rota GET de carrinhos', () => {
             token = res
         })
     });
+
+    it('Deve validar o contrato de carrinhos com sucesso', () => {
+        cy.request('carrinhos').then(res => {
+            return contrato.validateAsync(res.body.carrinhos[0].produtos[0])
+        })
+    })
 
     it('Deve listar todos os carrinhos', () => {
         cy.listarCarrinho().then(res => {
