@@ -6,8 +6,13 @@ describe('Teste de api na rota POST de usuarios', () => {
     it('Deve cadastrar um usuario', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
+            let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq("Cadastro realizado com sucesso")
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 

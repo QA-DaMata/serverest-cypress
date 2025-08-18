@@ -14,6 +14,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(200)
                 expect(res.body.message).eq('Registro alterado com sucesso')
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -32,7 +36,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         let id = '0uxuPY0cbmQhpQa1'
 
         cy.cadastrarUsuario(usuario).then(res => {
-            cy.log(JSON.stringify(usuario))
+            let usuarioId = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             let email = usuario.email
@@ -41,6 +45,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
             cy.atualizarUsuario(id, usuarioPut).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Este email já está sendo usado')
+            })
+            cy.deletarUsuario(usuarioId).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -57,6 +65,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(400)
                 expect(res.body.nome).eq('nome não pode ficar em branco')
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -71,6 +83,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
             cy.atualizarUsuario(id, usuario).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.email).eq('email não pode ficar em branco')
+            })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -87,6 +103,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(400)
                 expect(res.body.password).eq('password não pode ficar em branco')
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -101,6 +121,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
             cy.atualizarUsuario(id, usuario).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.administrador).eq("administrador deve ser 'true' ou 'false'")
+            })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -117,6 +141,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(400)
                 expect(res.body.nome).eq('nome deve ser uma string')
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -131,6 +159,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
             cy.atualizarUsuario(id, usuario).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.email).eq('email deve ser uma string')
+            })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -147,6 +179,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(400)
                 expect(res.body.password).eq('password deve ser uma string')
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -162,11 +198,15 @@ describe('Teste de api na rota PUT de usuarios', () => {
                 expect(res.status).eq(400)
                 expect(res.body.administrador).eq("administrador deve ser 'true' ou 'false'")
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
-      
+
     it('Não deve atualizar com o campo email invalido', () => {
-         let usuario = usuarios.usuarioData()
+        let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
             expect(res.status).eq(201)
@@ -176,6 +216,10 @@ describe('Teste de api na rota PUT de usuarios', () => {
             cy.atualizarUsuario(id, usuario).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.email).eq('email deve ser um email válido')
+            })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })

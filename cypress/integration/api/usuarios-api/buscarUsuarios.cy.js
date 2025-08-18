@@ -25,6 +25,10 @@ describe('Teste de api na rota GET de usuarios', () => {
                 expect(res.status).eq(200)
                 expect(res.body.nome).eq(usuario.nome)
             })
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
