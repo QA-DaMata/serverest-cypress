@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "init-proj": "npx serverest"
+    "init-proj": "npx serverest",
+    "cy-report": "npx cypress run --record --key 2de1b522-c21d-49f8-b07a-60a0bd8f7db8"
   },
   "author": "Guilherme Cordeiro da Mata",
   "license": "ISC",
