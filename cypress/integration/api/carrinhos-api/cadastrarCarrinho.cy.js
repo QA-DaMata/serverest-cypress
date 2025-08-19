@@ -4,16 +4,22 @@ import usuarios from "../../../fixtures/factories/usuario";
 
 describe('Teste de api na rota POST de carrinhos', () => {
     let token;
-
+    let id;
     beforeEach(() => {
         let usuario = usuarios.usuarioData()
         usuario.administrador = "true"
         cy.cadastrarUsuario(usuario).then(res => {
-            expect(res.status).eq(201)
-            expect(res.body.message).eq('Cadastro realizado com sucesso')
+            id = res.body._id
+            cy.token(usuario.email, usuario.password).then(res => {
+                token = res
+            })
         })
-        cy.token(usuario.email, usuario.password).then(res => {
-            token = res
+    });
+
+    afterEach(() => {
+        cy.deletarUsuario(id).then(res => {
+            expect(res.status).eq(200)
+            expect(res.body.message).eq('Registro excluído com sucesso')
         })
     });
 
@@ -27,6 +33,14 @@ describe('Teste de api na rota POST de carrinhos', () => {
             cy.cadastrarCarrinho(token, carrinho).then(res => {
                 expect(res.status).eq(201)
                 expect(res.body.message).eq('Cadastro realizado com sucesso')
+            })
+            cy.cancelarCompra(token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -46,6 +60,10 @@ describe('Teste de api na rota POST de carrinhos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Não é permitido possuir produto duplicado')
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -64,6 +82,14 @@ describe('Teste de api na rota POST de carrinhos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Não é permitido ter mais de 1 carrinho')
             })
+            cy.cancelarCompra(token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -71,12 +97,17 @@ describe('Teste de api na rota POST de carrinhos', () => {
         let produto = produtos.produtoData()
         let carrinho = carrinhos.carrinhoData()
         cy.cadastrarProduto(token, produto).then(res => {
+            let idProduto = res.body._id
             let id = 'souInvalidosieuf'
             carrinho.idProduto = id
             expect(res.status).eq(201)
             cy.cadastrarCarrinho(token, carrinho).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Produto não encontrado')
+            })
+            cy.deletarProduto(idProduto, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -97,6 +128,10 @@ describe('Teste de api na rota POST de carrinhos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Produto não possui quantidade suficiente')
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -111,6 +146,10 @@ describe('Teste de api na rota POST de carrinhos', () => {
             cy.cadastrarCarrinho(tokenInvalido, carrinho).then(res => {
                 expect(res.status).eq(401)
                 expect(res.body.message).eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+            })
+                        cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })

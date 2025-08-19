@@ -5,16 +5,22 @@ import contrato from "../../../contracts/carrinhos.contrato"
 
 describe('Teste de api na rota GET de carrinhos', () => {
     let token;
-
+    let id;
     beforeEach(() => {
         let usuario = usuarios.usuarioData()
         usuario.administrador = "true"
         cy.cadastrarUsuario(usuario).then(res => {
-            expect(res.status).eq(201)
-            expect(res.body.message).eq('Cadastro realizado com sucesso')
+            id = res.body._id
+            cy.token(usuario.email, usuario.password).then(res => {
+                token = res
+            })
         })
-        cy.token(usuario.email, usuario.password).then(res => {
-            token = res
+    });
+
+    afterEach(() => {
+        cy.deletarUsuario(id).then(res => {
+            expect(res.status).eq(200)
+            expect(res.body.message).eq('Registro excluído com sucesso')
         })
     });
 
@@ -44,6 +50,14 @@ describe('Teste de api na rota GET de carrinhos', () => {
                 cy.listarCarrinhoId(idCarrinho).then(res => {
                     expect(res.status).eq(200)
                     expect(res.body.produtos[0].idProduto).eq(id)
+                })
+                cy.cancelarCompra(token).then(res => {
+                    expect(res.status).eq(200)
+                    expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
+                })
+                cy.deletarProduto(id, token).then(res => {
+                    expect(res.status).eq(200)
+                    expect(res.body.message).eq('Registro excluído com sucesso')
                 })
             })
         })

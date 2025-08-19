@@ -4,16 +4,22 @@ import usuarios from "../../../fixtures/factories/usuario";
 
 describe('Teste de api na rota DELETE de carrinhos', () => {
     let token;
-
+    let id;
     beforeEach(() => {
         let usuario = usuarios.usuarioData()
         usuario.administrador = "true"
         cy.cadastrarUsuario(usuario).then(res => {
-            expect(res.status).eq(201)
-            expect(res.body.message).eq('Cadastro realizado com sucesso')
+            id = res.body._id
+            cy.token(usuario.email, usuario.password).then(res => {
+                token = res
+            })
         })
-        cy.token(usuario.email, usuario.password).then(res => {
-            token = res
+    });
+
+    afterEach(() => {
+        cy.deletarUsuario(id).then(res => {
+            expect(res.status).eq(200)
+            expect(res.body.message).eq('Registro excluído com sucesso')
         })
     });
 
@@ -34,6 +40,10 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
                     expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
                 })
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -41,11 +51,17 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
         let produto = produtos.produtoData()
 
         cy.cadastrarProduto(token, produto).then(res => {
+            let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.cancelarCompra(token).then(res => {
                 expect(res.status).eq(200)
                 expect(res.body.message).eq('Não foi encontrado carrinho para esse usuário')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+                cy.log(JSON.stringify(res))
             })
         })
     })
@@ -67,6 +83,14 @@ describe('Teste de api na rota DELETE de carrinhos', () => {
                     expect(res.status).eq(401)
                     expect(res.body.message).eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
                 })
+                cy.cancelarCompra(token).then(res => {
+                    expect(res.status).eq(200)
+                    expect(res.body.message).eq('Registro excluído com sucesso. Estoque dos produtos reabastecido')
+                })
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
