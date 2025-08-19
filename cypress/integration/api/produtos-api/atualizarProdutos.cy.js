@@ -4,37 +4,45 @@ import produtosArr from "../../../fixtures/produtos.json"
 
 describe('Teste de api na rota PUT de produtos', () => {
     let token;
-
+    let id;
     beforeEach(() => {
-        cy.token("fulano@qa.com", "teste").then(res => {
-            token = res
+        let usuario = usuarios.usuarioData()
+        usuario.administrador = "true"
+        cy.cadastrarUsuario(usuario).then(res => {
+            id = res.body._id
+            cy.token(usuario.email, usuario.password).then(res => {
+                token = res
+            })
         })
     });
 
-    it('Deve atualizar o produto', () => {
-        let produto = produtos.produtoData()
-        cy.cadastrarProduto(token, produto).then(res => {
-            let novoProduto = produtos.produtoData()
-            let id = res.body._id
-            expect(res.status).eq(201)
-            expect(res.body.message).eq('Cadastro realizado com sucesso')
-            cy.atualizarProduto(id, token, novoProduto).then(res => {
-                expect(res.status).eq(200)
-                expect(res.body.message).eq('Registro alterado com sucesso')
-            })
+    afterEach(() => {
+        cy.deletarUsuario(id).then(res => {
+            expect(res.status).eq(200)
+            expect(res.body.message).eq('Registro excluído com sucesso')
         })
-    })
+    });
 
     it('Deve cadastrar um produto caso não encontre o id', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
+            let idProduto = res.body._id
             let id = 'guifODIlXsqxNFS2'
             let novoProduto = produtos.produtoData()
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.atualizarProduto(id, token, novoProduto).then(res => {
+                let idNovoProduto = res.body._id
                 expect(res.status).eq(201)
                 expect(res.body.message).eq('Cadastro realizado com sucesso')
+                cy.deletarProduto(idNovoProduto, token).then(res => {
+                    expect(res.status).eq(200)
+                    expect(res.body.message).eq('Registro excluído com sucesso')
+                })
+            })
+            cy.deletarProduto(idProduto, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -43,20 +51,30 @@ describe('Teste de api na rota PUT de produtos', () => {
         let produto = produtos.produtoData()
         let produtoCadastrado = produtos.produtoData()
         cy.cadastrarProduto(token, produtoCadastrado).then(res => {
+            let idProduto1 = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
-        })
+            cy.cadastrarProduto(token, produto).then(res => {
+                let novoProduto = produtos.produtoData()
+                let nomeIgual = produtoCadastrado.nome
+                novoProduto.nome = nomeIgual
+                let id = res.body._id
+                cy.log(JSON.stringify(res))
+                expect(res.status).eq(201)
+                expect(res.body.message).eq('Cadastro realizado com sucesso')
+                cy.atualizarProduto(id, token, novoProduto).then(res => {
+                    expect(res.status).eq(400)
+                    expect(res.body.message).eq('Já existe produto com esse nome')
 
-        cy.cadastrarProduto(token, produto).then(res => {
-            let novoProduto = produtos.produtoData()
-            let nomeIgual = produtoCadastrado.nome
-            novoProduto.nome = nomeIgual
-            let id = res.body._id
-            expect(res.status).eq(201)
-            expect(res.body.message).eq('Cadastro realizado com sucesso')
-            cy.atualizarProduto(id, token, novoProduto).then(res => {
-                expect(res.status).eq(400)
-                expect(res.body.message).eq('Já existe produto com esse nome')
+                    cy.deletarProduto(idProduto1, token).then(res => {
+                        expect(res.status).eq(200)
+                        expect(res.body.message).eq('Registro excluído com sucesso')
+                    })
+                    cy.deletarProduto(id, token).then(res => {
+                        expect(res.status).eq(200)
+                        expect(res.body.message).eq('Registro excluído com sucesso')
+                    })
+                })
             })
         })
     })
@@ -72,6 +90,10 @@ describe('Teste de api na rota PUT de produtos', () => {
             cy.atualizarProduto(id, tkn, novoProduto).then(res => {
                 expect(res.status).eq(401)
                 expect(res.body.message).eq('Token de acesso ausente, inválido, expirado ou usuário do token não existe mais')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -102,8 +124,17 @@ describe('Teste de api na rota PUT de produtos', () => {
                             expect(res.body.message).eq('Rota exclusiva para administradores')
                         })
                     })
+                    cy.deletarUsuario(id).then(res => {
+                        expect(res.status).eq(200)
+                        expect(res.body.message).eq('Registro excluído com sucesso')
+                    })
+                    cy.deletarProduto(idProduto, token).then(res => {
+                        expect(res.status).eq(200)
+                        expect(res.body.message).eq('Registro excluído com sucesso')
+                    })
                 })
             })
+
         })
     })
 
@@ -119,6 +150,10 @@ describe('Teste de api na rota PUT de produtos', () => {
             cy.atualizarProduto(id, token, novoProduto).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.nome).eq('nome não pode ficar em branco')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -136,6 +171,10 @@ describe('Teste de api na rota PUT de produtos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.preco).eq('preco deve ser um número')
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -151,6 +190,10 @@ describe('Teste de api na rota PUT de produtos', () => {
             cy.atualizarProduto(id, token, novoProduto).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.descricao).eq('descricao não pode ficar em branco')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -168,6 +211,10 @@ describe('Teste de api na rota PUT de produtos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.descricao).eq('descricao não pode ficar em branco')
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -180,6 +227,10 @@ describe('Teste de api na rota PUT de produtos', () => {
             cy.atualizarProduto(id, token, produtosArr[0]).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.nome).eq('nome é obrigatório')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -194,6 +245,10 @@ describe('Teste de api na rota PUT de produtos', () => {
                 expect(res.status).eq(400)
                 expect(res.body.preco).eq('preco é obrigatório')
             })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
@@ -201,11 +256,16 @@ describe('Teste de api na rota PUT de produtos', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id
+            cy.log(JSON.stringify(res))
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.atualizarProduto(id, token, produtosArr[2]).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.descricao).eq('descricao é obrigatório')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -219,6 +279,10 @@ describe('Teste de api na rota PUT de produtos', () => {
             cy.atualizarProduto(id, token, produtosArr[3]).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.quantidade).eq('quantidade é obrigatório')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })

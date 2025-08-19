@@ -4,10 +4,22 @@ import produtosArr from "../../../fixtures/produtos.json"
 
 describe('Teste de api na rota POST de produtos', () => {
     let token;
-
+    let id;
     beforeEach(() => {
-        cy.token("fulano@qa.com", "teste").then(res => {
-            token = res
+        let usuario = usuarios.usuarioData()
+        usuario.administrador = "true"
+        cy.cadastrarUsuario(usuario).then(res => {
+            id = res.body._id
+            cy.token(usuario.email, usuario.password).then(res => {
+                token = res
+            })
+        })
+    });
+
+    afterEach(() => {
+        cy.deletarUsuario(id).then(res => {
+            expect(res.status).eq(200)
+            expect(res.body.message).eq('Registro excluído com sucesso')
         })
     });
 
@@ -15,19 +27,29 @@ describe('Teste de api na rota POST de produtos', () => {
         let produto = produtos.produtoData()
 
         cy.cadastrarProduto(token, produto).then(res => {
+            let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
     it('Não deve cadastrar produto com o mesmo nome', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
+            let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.cadastrarProduto(token, produto).then(res => {
                 expect(res.status).eq(400)
                 expect(res.body.message).eq('Já existe produto com esse nome')
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
             })
         })
     })
@@ -116,6 +138,7 @@ describe('Teste de api na rota POST de produtos', () => {
         usuario.administrador = adm
 
         cy.cadastrarUsuario(usuario).then(res => {
+            let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.token(usuario.email, usuario.password).then(res => {
@@ -125,7 +148,10 @@ describe('Teste de api na rota POST de produtos', () => {
                     expect(res.body.message).eq('Rota exclusiva para administradores')
                 })
             })
-
+            cy.deletarUsuario(id).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
         })
     })
 
