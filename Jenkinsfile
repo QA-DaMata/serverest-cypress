@@ -1,25 +1,21 @@
-pipeline{
+pipeline {
     agent any
 
     stages {
-        stage('Clonar repositorio'){
+        stage('Clonar repositorio') {
             steps {
-                git branch 'master', url: 'https://github.com/QA-DaMata/serverest-cypress.git'
+                git branch: 'master', url: 'https://github.com/QA-DaMata/serverest-cypress.git'
+                bat 'npm install'
             }
         }
         stage('Instalar dependencias') {
             steps {
-                sh 'npm install'
+                bat 'npm run init-proj'
             }
         }
-        stage('Iniciar o serverest') {
+        stage('Executar teste') {
             steps {
-                sh 'NO_COLOR=1 npm run init-proj'
-            }
-        }
-        stage('Executar testes') {
-            steps {
-                sh 'NO_COLOR=1 npx cypress run'
+               bat '''NO_COLOR=1 npx cypress run'''
             }
         }
     }
