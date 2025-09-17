@@ -96,7 +96,7 @@ describe('Teste de api na rota POST de usuarios', () => {
         })
     })
 
-    it('Não deve cadastrar usuario com o campo passwaord diferente de string', () => {
+    it('Não deve cadastrar usuario com o campo password diferente de string', () => {
         let usuario = usuarios.usuarioData()
         let pdwNull = null
         usuario.password = pdwNull
