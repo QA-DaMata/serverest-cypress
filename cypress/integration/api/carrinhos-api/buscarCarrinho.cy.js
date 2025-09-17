@@ -3,7 +3,7 @@ import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario";
 import contrato from "../../../contracts/carrinhos.contrato"
 
-describe('Teste de api na rota GET de carrinhos', () => {
+describe('Teste de API na rota GET de carrinhos', () => {
     let token;
     let id;
     beforeEach(() => {

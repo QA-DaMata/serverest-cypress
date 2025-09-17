@@ -2,7 +2,7 @@ import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario"
 import produtosArr from "../../../fixtures/produtos.json"
 
-describe('Teste de api na rota POST de produtos', () => {
+describe('Teste de API na rota POST de produtos', () => {
     let token;
     let id;
     beforeEach(() => {
@@ -54,7 +54,7 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastar o produto com o campo nome nulo', () => {
+    it('Não deve cadastrar o produto com o campo nome nulo', () => {
         let produto = produtos.produtoData()
         let nomeNull = ''
         produto.nome = nomeNull
@@ -64,7 +64,7 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastar o produto com o campo preco nulo', () => {
+    it('Não deve cadastrar o produto com o campo preço nulo', () => {
         let produto = produtos.produtoData()
         let precoNull = ''
         produto.preco = precoNull
@@ -74,7 +74,7 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastar o produto com o campo descricao nulo', () => {
+    it('Não deve cadastrar o produto com o campo descrição nulo', () => {
         let produto = produtos.produtoData()
         let descNull = ''
         produto.descricao = descNull
@@ -84,7 +84,7 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastar o produto com o campo quantidade nulo', () => {
+    it('Não deve cadastrar o produto com o campo quantidade nulo', () => {
         let produto = produtos.produtoData()
         let qntNull = ''
         produto.quantidade = qntNull
@@ -94,35 +94,35 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastar o produto sem o campo nome', () => {
+    it('Não deve cadastrar o produto sem o campo nome', () => {
         cy.cadastrarProduto(token, produtosArr[0]).then(res => {
             expect(res.status).eq(400)
             expect(res.body.nome).eq('nome é obrigatório')
         })
     })
 
-    it('Não deve cadastar o produto sem o campo preco', () => {
+    it('Não deve cadastrar o produto sem o campo preço', () => {
         cy.cadastrarProduto(token, produtosArr[1]).then(res => {
             expect(res.status).eq(400)
             expect(res.body.preco).eq('preco é obrigatório')
         })
     })
 
-    it('Não deve cadastar o produto sem o campo descricao', () => {
+    it('Não deve cadastrar o produto sem o campo descrição', () => {
         cy.cadastrarProduto(token, produtosArr[2]).then(res => {
             expect(res.status).eq(400)
             expect(res.body.descricao).eq('descricao é obrigatório')
         })
     })
 
-    it('Não deve cadastar o produto sem o campo quantidade', () => {
+    it('Não deve cadastrar o produto sem o campo quantidade', () => {
         cy.cadastrarProduto(token, produtosArr[3]).then(res => {
             expect(res.status).eq(400)
             expect(res.body.quantidade).eq('quantidade é obrigatório')
         })
     })
 
-    it('Não deve cadastrar produto com o token invalido', () => {
+    it('Não deve cadastrar produto com o token inválido', () => {
         let tokenInvalido = 'souinvalidoasjklfbnAWUIL'
         let produto = produtos.produtoData()
         cy.cadastrarProduto(tokenInvalido, produto).then(res => {
@@ -131,7 +131,7 @@ describe('Teste de api na rota POST de produtos', () => {
         })
     })
 
-    it('Não deve cadastrar o produto com o usuario sem o acesso de adiminstrador', () => {
+    it('Não deve cadastrar o produto com o usuário sem acesso de administrador', () => {
         let produto = produtos.produtoData()
         let usuario = usuarios.usuarioData()
         let adm = "false"

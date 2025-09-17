@@ -2,7 +2,7 @@ import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario"
 import produtosArr from "../../../fixtures/produtos.json"
 
-describe('Teste de api na rota PUT de produtos', () => {
+describe('Teste de API na rota PUT de produtos', () => {
     let token;
     let id;
     beforeEach(() => {
@@ -22,6 +22,25 @@ describe('Teste de api na rota PUT de produtos', () => {
             expect(res.body.message).eq('Registro excluído com sucesso')
         })
     });
+
+    it('Deve atualizar o produto com sucesso', () => {
+        let produto = produtos.produtoData()
+        cy.cadastrarProduto(token, produto).then(res => {
+            let id = res.body._id
+            expect(res.status).eq(201)
+            expect(res.body.message).eq('Cadastro realizado com sucesso')
+            let descricao = 'Descricao atualizada'
+            produto.descricao = descricao
+            cy.atualizarProduto(id, token, produto).then(res => {
+                expect(res.status).eq(200)
+                expect(produto.descricao).eq(descricao)
+            })
+            cy.deletarProduto(id, token).then(res => {
+                expect(res.status).eq(200)
+                expect(res.body.message).eq('Registro excluído com sucesso')
+            })
+        })
+    })
 
     it('Deve cadastrar um produto caso não encontre o id', () => {
         let produto = produtos.produtoData()
@@ -59,8 +78,6 @@ describe('Teste de api na rota PUT de produtos', () => {
                 let nomeIgual = produtoCadastrado.nome
                 novoProduto.nome = nomeIgual
                 let id = res.body._id
-                cy.log(JSON.stringify(res))
-                expect(res.status).eq(201)
                 expect(res.body.message).eq('Cadastro realizado com sucesso')
                 cy.atualizarProduto(id, token, novoProduto).then(res => {
                     expect(res.status).eq(400)
@@ -79,7 +96,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar produto com o token invalido', () => {
+    it('Não deve atualizar o produto com o token inválido', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let novoProduto = produtos.produtoData()
@@ -98,7 +115,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar o produto com o usuario sem a permissão de administrador', () => {
+    it('Não deve atualizar o produto com o usuário sem permissão de administrador', () => {
         let produto = produtos.produtoData()
         let usuario = usuarios.usuarioData()
         let adm = "true"
@@ -158,7 +175,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar o produto com o campo preco nulo', () => {
+    it('Não deve atualizar o produto com o campo preço nulo', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let novoProduto = produtos.produtoData()
@@ -178,7 +195,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar o produto com o campo descricao nulo', () => {
+    it('Não deve atualizar o produto com o campo descrição nulo', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let novoProduto = produtos.produtoData()
@@ -202,14 +219,14 @@ describe('Teste de api na rota PUT de produtos', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let novoProduto = produtos.produtoData()
-            let descNulo = ''
-            novoProduto.descricao = descNulo
+            let qntdNulo = ''
+            novoProduto.quantidade = qntdNulo
             let id = res.body._id
             expect(res.status).eq(201)
             expect(res.body.message).eq('Cadastro realizado com sucesso')
             cy.atualizarProduto(id, token, novoProduto).then(res => {
                 expect(res.status).eq(400)
-                expect(res.body.descricao).eq('descricao não pode ficar em branco')
+                expect(res.body.quantidade).eq('quantidade deve ser um número')
             })
             cy.deletarProduto(id, token).then(res => {
                 expect(res.status).eq(200)
@@ -218,7 +235,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar  o produto sem o campo nome', () => {
+    it('Não deve atualizar o produto sem o campo nome', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id
@@ -235,7 +252,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar  o produto sem o campo preco', () => {
+    it('Não deve atualizar o produto sem o campo preço', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id
@@ -252,7 +269,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar  o produto sem o campo descricao', () => {
+    it('Não deve atualizar o produto sem o campo descrição', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id
@@ -270,7 +287,7 @@ describe('Teste de api na rota PUT de produtos', () => {
         })
     })
 
-    it('Não deve atualizar  o produto sem o campo quantidade', () => {
+    it('Não deve atualizar o produto sem o campo quantidade', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id

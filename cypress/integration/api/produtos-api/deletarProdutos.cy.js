@@ -1,7 +1,7 @@
 import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario"
 
-describe('Teste de api na rota DELETE de produtos', () => {
+describe('Teste de API na rota DELETE de produtos', () => {
     let token;
     let id;
     beforeEach(() => {
@@ -44,7 +44,7 @@ describe('Teste de api na rota DELETE de produtos', () => {
         })
     })
 
-    it('Não deve excluir produto com o token de autenticação invalido', () => {
+    it('Não deve excluir produto com o token de autenticação inválido', () => {
         let produto = produtos.produtoData()
         let tokenInvalido = "souInvalidoahiwedgqa"
 
@@ -63,7 +63,7 @@ describe('Teste de api na rota DELETE de produtos', () => {
         })
     })
 
-    it('Não deve excluir um produto se o usuario não tiver o acesso de administrador', () => {
+    it('Não deve excluir um produto se o usuário não tiver acesso de administrador', () => {
         let produto = produtos.produtoData()
         let usuario = usuarios.usuarioData()
         let adm = "true"

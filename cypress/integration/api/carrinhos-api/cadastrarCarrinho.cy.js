@@ -2,7 +2,7 @@ import carrinhos from "../../../fixtures/factories/carrinho";
 import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario";
 
-describe('Teste de api na rota POST de carrinhos', () => {
+describe('Teste de API na rota POST de carrinhos', () => {
     let token;
     let id;
     beforeEach(() => {
@@ -67,7 +67,7 @@ describe('Teste de api na rota POST de carrinhos', () => {
         })
     })
 
-    it('Não deve cadastrar 2 carrinhos para o mesmo usuario', () => {
+    it('Não deve cadastrar dois carrinhos para o mesmo usuário', () => {
         let produto = produtos.produtoData()
         let carrinho = carrinhos.carrinhoData()
         cy.cadastrarProduto(token, produto).then(res => {
@@ -135,7 +135,7 @@ describe('Teste de api na rota POST de carrinhos', () => {
         })
     })
 
-    it('Não deve cadastar carrinho com token invalido', () => {
+    it('Não deve cadastrar carrinho com token inválido', () => {
         let produto = produtos.produtoData()
         let carrinho = carrinhos.carrinhoData()
         let tokenInvalido = 'souInvalidoASEHJKGF'

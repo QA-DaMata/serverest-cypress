@@ -1,6 +1,6 @@
 import usuarios from "../../../fixtures/factories/usuario";
 
-describe('Teste de api na rota Delete de usuarios', () => {
+describe('Teste de API na rota DELETE de usuários', () => {
 
     it('Deve excluir o usuário com sucesso', () => {
         let usuario = usuarios.usuarioData()

@@ -1,7 +1,7 @@
 import usuarios from "../../../fixtures/factories/usuario";
 import usuariosArr from "../../../fixtures/usuarios.json"
 
-describe('Teste de api na rota POST de usuarios', () => {
+describe('Teste de API na rota POST de usuarios', () => {
 
     it('Deve cadastrar um usuário', () => {
         let usuario = usuarios.usuarioData()
@@ -66,7 +66,7 @@ describe('Teste de api na rota POST de usuarios', () => {
         })
     })
 
-    it('Não deve cadastrar usuário com email invalido', () => {
+    it('Não deve cadastrar usuário com email inválido', () => {
         let usuario = usuarios.usuarioData()
         let emailInvalido = "estouinvalido.com.br"
         usuario.email = emailInvalido

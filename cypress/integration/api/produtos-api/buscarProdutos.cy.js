@@ -3,7 +3,7 @@ import usuarios from "../../../fixtures/factories/usuario";
 import contrato from "../../../contracts/produtos.contrato"
 
 
-describe('Teste de api na rota GET de produtos', () => {
+describe('Teste de API na rota GET de produtos', () => {
     let token;
     let id;
     beforeEach(() => {
@@ -30,13 +30,13 @@ describe('Teste de api na rota GET de produtos', () => {
         })
     })
 
-    it('Deve listar todos os produto cadastrados', () => {
+    it('Deve listar todos os produtos cadastrados', () => {
         cy.listarProdutos().then(res => {
             expect(res.status).eq(200)
         })
     })
 
-    it('Deve buscar produto por id', () => {
+    it('Deve buscar produto por ID', () => {
         let produto = produtos.produtoData()
         cy.cadastrarProduto(token, produto).then(res => {
             let id = res.body._id
@@ -53,7 +53,7 @@ describe('Teste de api na rota GET de produtos', () => {
         })
     })
 
-    it('Não deve buscar produto com id não cadastrado', () => {
+    it('Não deve buscar produto com ID não cadastrado', () => {
         let idInvalido = 'GuiJh5lz3k6kSIzA'
         cy.listarProdutosId(idInvalido).then(res => {
             expect(res.status).eq(400)

@@ -1,7 +1,7 @@
 import usuarios from "../../../fixtures/factories/usuario";
 import contrato from "../../../contracts/usuarios.contrato"
 
-describe('Teste de api na rota GET de usuarios', () => {
+describe('Teste de API na rota GET de usuários', () => {
 
     it('Deve validar contrato de usuários com sucesso', () => {
         cy.request('usuarios').then(res => {

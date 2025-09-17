@@ -2,7 +2,7 @@ import carrinhos from "../../../fixtures/factories/carrinho";
 import produtos from "../../../fixtures/factories/produto";
 import usuarios from "../../../fixtures/factories/usuario";
 
-describe('Teste de api na rota DELETE de carrinhos', () => {
+describe('Teste de API na rota DELETE de carrinhos', () => {
     let token;
     let id;
     beforeEach(() => {
