@@ -2,7 +2,7 @@ import usuarios from "../../../fixtures/factories/usuario";
 
 describe('Teste de api na rota Delete de usuarios', () => {
 
-    it('Deve excluir usuario', () => {
+    it('Deve excluir o usuário com sucesso', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -15,7 +15,7 @@ describe('Teste de api na rota Delete de usuarios', () => {
         })
     })
 
-    it('Não deve excluir usuario com carrinho cadastrado', () => {
+    it('Não deve excluir usuário com carrinho cadastrado', () => {
         let id = '0uxuPY0cbmQhpEz1'
         cy.deletarUsuario(id).then(res => {
             expect(res.status).eq(400)
@@ -23,7 +23,7 @@ describe('Teste de api na rota Delete de usuarios', () => {
         })
     })
 
-    it('Ao não encontrar um id deve aparecer a mensagem (Nenhum registro excluído)', () => {
+    it('Não deve excluir usuário quando o id passado não estiver cadastrado', () => {
         let id = '0guiPY0cbmQhpEz1'
         cy.deletarUsuario(id).then(res => {
             expect(res.status).eq(200)

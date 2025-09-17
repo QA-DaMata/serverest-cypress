@@ -2,7 +2,7 @@ import usuarios from "../../../fixtures/factories/usuario";
 
 describe('Teste de api na rota PUT de usuarios', () => {
 
-    it('Deve atualizar o usuario com sucesso', () => {
+    it('Deve atualizar o usuário com sucesso', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -21,7 +21,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Deve criar um usuario novo caso o id do usuario não for encontrado', () => {
+    it('Deve criar um usuário novo caso o id do usuário não for encontrado', () => {
         let usuario = usuarios.usuarioData()
         let idNaoEncontrado = '0uxuPY0cbmQhpQa1'
         cy.atualizarUsuario(idNaoEncontrado, usuario).then(res => {
@@ -30,7 +30,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar o email do usuario se o mesmo já estiver cadastrado', () => {
+    it('Não deve atualizar usuário com email já cadastrado', () => {
         let usuario = usuarios.usuarioData()
         let usuarioPut = usuarios.usuarioData()
         let id = '0uxuPY0cbmQhpQa1'
@@ -53,7 +53,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar com o campo nome em branco/nulo', () => {
+    it('Não deve atualizar usuário com o campo nome em branco/nulo', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -72,7 +72,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar com o campo email em branco/nulo', () => {
+    it('Não deve atualizar usuário com o campo email em branco/nulo', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -91,7 +91,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar com o campo password em branco/nulo', () => {
+    it('Não deve atualizar usuário com o campo password em branco/nulo', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -110,7 +110,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar com o campo administrador em branco/nulo', () => {
+    it('Não deve atualizar usuário com o campo administrador em branco/nulo', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -129,7 +129,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualixar com o campo nome diferente de string', () => {
+    it('Não deve atualizar usuário com o campo nome diferente de string', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -148,7 +148,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualixar com o campo email diferente de string', () => {
+    it('Não deve atualizar usuário com o campo email diferente de string', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -167,7 +167,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualixar com o campo password diferente de string', () => {
+    it('Não deve atualizar usuário com o campo password diferente de string', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -186,7 +186,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualixar com o campo administrador diferente de string', () => {
+    it('Não deve atualizar usuário com o campo administrador diferente de string', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
@@ -205,7 +205,7 @@ describe('Teste de api na rota PUT de usuarios', () => {
         })
     })
 
-    it('Não deve atualizar com o campo email invalido', () => {
+    it('Não deve atualizar usuário com o campo email invalido', () => {
         let usuario = usuarios.usuarioData()
         cy.cadastrarUsuario(usuario).then(res => {
             let id = res.body._id
