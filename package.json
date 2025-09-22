@@ -13,6 +13,8 @@
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
     "cypress": "^14.5.3",
-    "joi": "^18.0.0"
+    "joi": "^18.0.0",
+    "prettier": "^3.6.2",
+    "prettier-plugin-gherkin": "^3.1.2"
   }
 }
