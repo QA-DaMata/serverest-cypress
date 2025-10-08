@@ -2,7 +2,7 @@
 
 Projeto denvolvido em [Node.js](https://nodejs.org/en/) com framework [Cypress](https://www.cypress.io/)
 
-| <img src="https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/usuario.gif" width="310" height="310" /> | **![grab-landing-page](https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/produtos.gif)** | **![grab-landing-page](https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/carrinhos.gif)** |
+| **![grab-landing-page](https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/usuarios.gif)** | **![grab-landing-page](https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/produtos.gif)** | **![grab-landing-page](https://github.com/QA-DaMata/serverest-cypress/blob/master/cypress/downloads/carrinhos.gif)** |
 |-------------|----------------|-------------|  
 
 ## 📘 Pré-requisitos
